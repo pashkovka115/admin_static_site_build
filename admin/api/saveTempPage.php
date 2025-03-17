@@ -7,7 +7,7 @@ $_POST = json_decode(file_get_contents('php://input'), true);
 //echo json_encode($_POST);
 //return;
 
-$new_file = '../../temp_temp_tem.html';
+$new_file = '../../temp_temp_temp.html';
 
 if (isset($_POST['html'])) {
     file_put_contents($new_file, $_POST['html']);

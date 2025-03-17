@@ -1,7 +1,7 @@
 <?php
 include 'checkAuth.inc.php';
 
-$file = '../../temp_temp_tem.html';
+$file = '../../temp_temp_temp.html';
 
 if (file_exists($file)) {
     unlink($file);
