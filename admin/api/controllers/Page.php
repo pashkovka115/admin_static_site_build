@@ -65,7 +65,7 @@ class Page
         }
     }
 
-    public function getTmpPage()
+    public function getTempPage()
     {
         $f = new File();
         $tmp_file = $f->getFileAsStr('temp_temp_temp.html');
