@@ -1,2 +1,16 @@
 
-Options All -Indexes
+RewriteEngine on
+
+DirectoryIndex easycms.php
+
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^.*$ easycms.php?q=$0 [L,NC,QSA]
+
+<Files ~ "\.(ini|log)$">
+
+deny from all
+
+</Files>
+
+Options -Indexes
