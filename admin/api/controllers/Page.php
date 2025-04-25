@@ -28,6 +28,28 @@ class Page
         echo json_encode($f->listHTML());
     }
 
+    public function saveMeta()
+    {
+        if (isset($_REQUEST['meta'])){
+            $page = $_REQUEST['meta']['page'];
+            $title = isset($_REQUEST['meta']['title']) ? $_REQUEST['meta']['title'] : '';
+            $keywords = isset($_REQUEST['meta']['keywords']) ? $_REQUEST['meta']['keywords'] : '';
+            $description = isset($_REQUEST['meta']['description']) ? $_REQUEST['meta']['description'] : '';
+
+            $file = new File();
+            $html = $file->getFileAsStr($page);
+
+            $editor = new EditHTML();
+            $html = $editor->setMeta($html, $title, $keywords, $description);
+
+            if ($file->writeFile($page, $html)){
+                echo json_encode(['success' => 'Данные сохранены.']);
+            }else{
+                echo json_encode(['error' => 'Ошибка при сохранении.']);
+            }
+        }
+    }
+
     public function normalizeLinks()
     {
         if (isset($_REQUEST['page'])) {
@@ -96,28 +118,6 @@ class Page
 
     }
 
-    /*protected function wrapHTML(string $html): string
-    {
-        $editHTML = new EditHTML();
-        $html = $editHTML->wrapTextNodes($html);
-        $html = $editHTML->wrapImages($html);
-        $html = $editHTML->injectStyle($html);
-        $html = $editHTML->addEasyCmsPanel($html);
-
-        return $html;
-    }*/
-
-    /*protected function unWrapHTML(string $html): string
-    {
-        $editHTML = new EditHTML();
-        $html = $editHTML->unWrapTextNodes($html);
-        $html = $editHTML->unWrapImages($html);
-        $html = $editHTML->unInjectStyle($html);
-        $html = $editHTML->deleteEasyCmsPanel($html);
-
-        return $html;
-    }*/
-
     public function getPage($page = false, $return = false)
     {
         if (isset($_REQUEST['page'])) {
@@ -176,49 +176,4 @@ class Page
             header('HTTP/1.0 400 Bad Request');
         }
     }
-
-    /*public function save()
-    {
-        // todo: savePageToBackup
-        if (isset($_REQUEST['html']) && isset($_REQUEST['page'])) {
-            $f = new File();
-            $f->writeFile($_REQUEST['page'], $_REQUEST['html']);
-            echo json_encode([$_REQUEST['page'], $_REQUEST['html']]);
-        } else {
-            header('HTTP/1.0 400 Bad Request');
-        }
-    }*/
-
-    /*public function saveTempPage()
-    {
-        if (isset($_REQUEST['html'])) {
-            if (!is_dir($this->temp_dir)){
-                mkdir($this->temp_dir);
-            }
-            $f = new File();
-            $f->writeFile($this->temp_dir . Constant::TmpFile(), $_REQUEST['html'], true);
-        } else {
-            header('HTTP/1.0 400 Bad Request');
-        }
-    }*/
-
-    /*public function getTempPage()
-    {
-        Header::noCach();
-
-        $f = new File();
-        $tmp_file = $f->getFileAsStr($this->temp_dir . Constant::TmpFile(), true);
-
-        if ($tmp_file) {
-            echo $tmp_file;
-        }else{
-            echo "null" . (string)$tmp_file;
-        }
-    }*/
-
-    /*public function deleteTempPage()
-    {
-        $f = new File();
-        $f->delete($this->temp_dir . Constant::TmpFile(), true);
-    }*/
 }

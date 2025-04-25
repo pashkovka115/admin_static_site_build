@@ -1,3 +1,8 @@
+<Files settings.json>
+    Order allow,deny
+    Deny from all
+</Files>
+
 
 RewriteEngine on
 

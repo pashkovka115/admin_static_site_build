@@ -1,10 +1,9 @@
 {
   "title": "Easy CMS",
   "password": "123456",
-  "home_url": "https://vue-admin-v3.loc",
+  "home_url": "https://vue-admin.loc",
   "home_url_admin": "/admin/",
   "target": "",
-  "path_api": "/admin/api/",
   "links": [
     {
       "title": "На сайт",

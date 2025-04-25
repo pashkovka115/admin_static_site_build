@@ -15,9 +15,39 @@ class EditHTML
         $this->base_href = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'];
     }
 
+
+    public function setMeta(string $html, string $title, string $keywords, string $description): string
+    {
+        $document = new Document($html);
+
+        if ($document->has('title')){
+            $document->first('head title')->setValue($title);
+        }else{
+            $title = new Element('title', $title);
+            $document->first('head')->appendChild($title);
+        }
+
+        if ($document->has('meta[name=keywords]')){
+            $document->first('meta[name=keywords]')->setAttribute('content', $keywords);
+        }else{
+            $keywords = new Element('meta', '', ['name' => 'keywords', 'content' => $keywords]);
+            $document->first('head')->appendChild($keywords);
+        }
+
+        if ($document->has('meta[name=description]')){
+            $document->first('meta[name=description]')->setAttribute('content', $description);
+        }else{
+            $description = new Element('meta', '', ['name' => 'keywords', 'content' => $description]);
+            $document->first('head')->appendChild($description);
+        }
+
+        return $document->html();
+    }
+
+
+
     public function wrapHTML(string $html): string
     {
-//        $editHTML = new EditHTML();
         $html = $this->wrapTextNodes($html);
         $html = $this->wrapImages($html);
         $html = $this->injectStyle($html);
@@ -28,7 +58,6 @@ class EditHTML
 
     public function unWrapHTML(string $html): string
     {
-//        $editHTML = new EditHTML();
         $html = $this->unWrapTextNodes($html);
         $html = $this->unWrapImages($html);
         $html = $this->unInjectStyle($html);
@@ -89,7 +118,7 @@ class EditHTML
 
                         if (strlen($child->getNode()->nodeValue) > 0) {
                             $i++;
-                            $txe = new Element('text-editor', $child->getNode()->nodeValue, ['nodeid' => $i, 'contenteditable' => "true"]);
+                            $txe = new Element('text-editor', $child->getNode()->nodeValue, ['nodeid' => $i, 'contenteditable' => "false"]);
                             $child->replace($txe);
                         }
                     }

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-define('DEBUG', false);
+define('DEBUG', true);
 
 
 $query = basename($_SERVER['REQUEST_URI']);
@@ -43,7 +43,12 @@ spl_autoload_register(function ($class) {
 if ($controller != '' && class_exists('Controllers\\' . $controller)) {
     $obj = new ('Controllers\\' . $controller)();
     if (method_exists($obj, $method)) {
-        $obj->$method($params);
+        if (
+            (isset($_SESSION['auth']) && $_SESSION['auth'] == true)
+            or ($controller == 'auth' && $method == 'login')
+        ){
+            $obj->$method($params);
+        }
     } else {
         if (DEBUG) {
             echo "В классе нет метода $method";
