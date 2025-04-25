@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-define('DEBUG', true);
+define('DEBUG', false);
 
 
 $query = basename($_SERVER['REQUEST_URI']);
