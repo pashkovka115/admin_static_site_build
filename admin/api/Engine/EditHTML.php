@@ -118,7 +118,8 @@ class EditHTML
 
                         if (strlen($child->getNode()->nodeValue) > 0) {
                             $i++;
-                            $txe = new Element('text-editor', $child->getNode()->nodeValue, ['nodeid' => $i, 'contenteditable' => "false"]);
+                        //    $txe = new Element('text-editor', $child->getNode()->nodeValue, ['nodeid' => $i, 'contenteditable' => "false"]);
+							$txe = new Element('text-editor', htmlspecialchars($child->text()), ['nodeid' => $i]);
                             $child->replace($txe);
                         }
                     }
